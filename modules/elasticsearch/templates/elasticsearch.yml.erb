@@ -1,0 +1,7 @@
+network :
+  host : 0.0.0.0
+path:
+  logs: <%= scope.lookupvar('elasticsearch::elasticsearch_log_folder') %>
+  data: <%= scope.lookupvar('elasticsearch::elasticsearch_data_folder') %>
+cluster:
+  name: <%= scope.lookupvar('elasticsearch::cluster') %>

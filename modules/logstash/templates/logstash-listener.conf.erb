@@ -1,0 +1,16 @@
+input {
+    amqp {
+        host => '127.0.0.1'
+        port => '5672'
+        exchange => 'logs'
+        name => 'logs'
+        type => 'logs'
+        exclusive => false
+    }
+}
+
+output {
+    rggelf {
+        host => '127.0.0.1'
+    }
+}

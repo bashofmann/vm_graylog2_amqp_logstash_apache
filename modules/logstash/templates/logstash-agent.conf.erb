@@ -1,0 +1,61 @@
+input {
+    file {
+        type => "apache-exception"
+        path => [ "/var/logs/apache/*_error.log" ]
+        add_field => [ "severity", "error" ]
+    }
+    file {
+        type => "apache-access"
+        path => [ "/var/logs/apache/*_access.log" ]
+        add_field => [ "severity", "info" ]
+    }
+}
+
+filter{
+
+    grok {
+        match => ["@source", "\/%{USERNAME:facility}\.log$"]
+    }
+
+    grok {
+        type => "apache-exception"
+        pattern => "^.*?\{%{GREEDYDATA:jsoninsides}\}"
+    }
+    mutate {
+        type => "apache-exception"
+        replace => [ "jsoninsides", "{%{jsoninsides}}" ]
+    }
+    rgjson {
+        type => "apache-exception"
+        jsoninsides => ""
+    }
+    grok {
+        type => "apache-exception"
+        tags => ["_grokparsefailure"]
+        pattern => "^\[.*?\]\s%{DATA:message}\sin\s%{GREEDYDATA:File}"
+        #remove_tag => ["_grokparsefailure"] available in 1.1.1 TODO: delete all messages with grok or json parse failures
+    }
+    mutate {
+        type => "apache-exception"
+        remove => ["jsoninsides", "@message", "@source_path"]
+    }
+
+    grok {
+        type => "apache-access"
+        pattern => "^%{IP:OriginalIp}\s[a-zA-Z0-9_-]+\s[a-zA-Z0-9_-]+\s\[.*?\]\s\"%{DATA:Request}\sHTTP\/\d\.\d\"\s%{USERNAME:HttpResponseCode}\s[a-zA-Z0-9_-]+\s\"%{DATA:Referrer}\"\s\"%{DATA:UserAgent}\"\s%{USERNAME:SessionId}\s%{USERNAME:AccountId}\s%{DATA:ResponseTime}\s%{USERNAME:CorrelationId}\s%{DATA:UserIp}\s%{USERNAME:RequestProtocol}\s%{USERNAME:AppServerConfig}"
+    }
+}
+
+
+output {
+    # Output events to stdout for debugging. Feel free to remove
+    # this output if you don't need it.
+    # stdout { }
+
+    # Ship events to the amqp fanout queue named 'rawlogs"
+    amqp {
+        host => "127.0.0.1"
+        exchange_type => "fanout"
+        name => "logs"
+    }
+}

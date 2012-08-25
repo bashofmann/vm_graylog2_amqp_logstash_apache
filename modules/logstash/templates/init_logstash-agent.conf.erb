@@ -1,0 +1,20 @@
+# logstash agent
+description "Logstash agent"
+
+start on stopped rc RUNLEVEL=[345]
+stop on runlevel [!2345]
+
+respawn 
+respawn limit 2 10
+
+# run with lowest priority
+nice 19
+
+script
+    JAR='<%= scope.lookupvar('logstash::logstash_folder') -%>/logstash.jar'
+    CONF='<%= scope.lookupvar('logstash::logstash_config_folder') -%>/logstash-agent.conf'
+    LOG='<%= scope.lookupvar('logstash::logstash_log_folder') -%>/agent.log'
+    PLUGINPATH='/opt'
+
+    exec sudo -i -u logstash java -jar $JAR agent --pluginpath $PLUGINPATH -f $CONF > $LOG 2>&1
+end script

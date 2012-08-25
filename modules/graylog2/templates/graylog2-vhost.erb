@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	LimitRequestLine 32760
+	
+	DocumentRoot <%= scope.lookupvar('graylog2::graylog_folder') %>/graylog2-web-interface/public
+	<Directory <%= scope.lookupvar('graylog2::graylog_folder') %>/graylog2-web-interface/public>
+		Allow from all
+		Options -MultiViews
+	</Directory>
+
+	ErrorLog <%= scope.lookupvar('graylog2::graylog_log_folder') %>/graylogs2_web_error.log
+
+	LogLevel warn
+
+	CustomLog /var/log/apache2/graylog2_access.log combined
+
+</VirtualHost>

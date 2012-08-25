@@ -1,0 +1,19 @@
+<VirtualHost *:81>
+        ServerAdmin webmaster@localhost
+
+        LimitRequestLine 32760
+
+        DocumentRoot /var/www
+
+        <Directory /var/wwwc>
+                Allow from all
+                Options -MultiViews
+        </Directory>
+
+        ErrorLog /var/log/apache2/testapp_error.log
+
+        LogLevel warn
+
+        CustomLog /var/log/apache2/testapp_access.log combined
+
+</VirtualHost>
