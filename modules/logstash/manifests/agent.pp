@@ -1,7 +1,7 @@
 class logstash::agent () {
 
    include logstash
-   include grok
+   #include grok
 
    file {
         "/opt/logstash/filters":

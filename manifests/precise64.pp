@@ -17,6 +17,7 @@ class environment {
     include rabbitmq
     include logstash::agent
     include logstash::listener
+    include testapp
 }
 
 include environment

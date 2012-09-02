@@ -1,12 +1,12 @@
 input {
     file {
         type => "apache-exception"
-        path => [ "/var/logs/apache/*_error.log" ]
+        path => [ "/var/log/apache2/*_error.log" ]
         add_field => [ "severity", "error" ]
     }
     file {
         type => "apache-access"
-        path => [ "/var/logs/apache/*_access.log" ]
+        path => [ "/var/log/apache2/*_access.log" ]
         add_field => [ "severity", "info" ]
     }
 }

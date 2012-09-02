@@ -9,12 +9,13 @@ respawn limit 2 10
 
 # run with lowest priority
 nice 19
+chdir /tmp
 
 script
-    JAR='<%= scope.lookupvar('logstash::logstash_folder') -%>/logstash.jar'
-    CONF='<%= scope.lookupvar('logstash::logstash_config_folder') -%>/logstash-agent.conf'
-    LOG='<%= scope.lookupvar('logstash::logstash_log_folder') -%>/agent.log'
+    JAR='/opt/logstash/logstash.jar'
+    CONF='/etc/logstash/logstash-agent.conf'
+    LOG='/var/log/logstash/agent.log'
     PLUGINPATH='/opt'
 
-    exec sudo -i -u logstash java -jar $JAR agent --pluginpath $PLUGINPATH -f $CONF > $LOG 2>&1
+    exec sudo java -jar $JAR agent --pluginpath $PLUGINPATH -f $CONF -v > $LOG 2>&1
 end script

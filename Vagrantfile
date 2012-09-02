@@ -13,6 +13,8 @@ Vagrant::Config.run do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
+  config.vm.customize ["modifyvm", :id, "--memory", 1024]
+
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
 
@@ -31,6 +33,8 @@ Vagrant::Config.run do |config|
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 80, 8180
   config.vm.forward_port 81, 8181
+  config.vm.forward_port 9200, 8192
+  config.vm.forward_port 55672, 8155
 
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
