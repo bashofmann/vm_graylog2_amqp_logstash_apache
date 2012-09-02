@@ -32,7 +32,8 @@ class rabbitmq {
 	    "install management plugin":
 	        command => "/usr/sbin/rabbitmq-plugins enable rabbitmq_management",
 	        user => "root",
-	        unless => "/usr/sbin/rabbitmq-plugins list | grep 'rabbitmq_management ' | grep [E]";
+	        unless => "/usr/sbin/rabbitmq-plugins list | grep 'rabbitmq_management ' | grep [E]",
+	        notify => Service["rabbitmq-server"];
 	} ->
 	file {
 		"$data_dir":
