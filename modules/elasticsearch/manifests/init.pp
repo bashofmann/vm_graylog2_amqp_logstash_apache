@@ -6,7 +6,7 @@
     $elasticsearch_log_folder = "/var/log/elasticsearch"
     $elasticsearch_file = "elasticsearch-$version.tar.gz"
     $elasticsearch_install_folder = "$elasticsearch_folder/elasticsearch-$version"
-    $elasticsearch_wget_link = "https://download.elasticsearch.org/elasticsearch/elasticsearch/\/$elasticsearch_file"
+    $elasticsearch_wget_link = "https://download.elasticsearch.org/elasticsearch/elasticsearch/$elasticsearch_file"
     $elasticsearch_user = "elasticsearch"
     $cluster = "log_cluster"
 
